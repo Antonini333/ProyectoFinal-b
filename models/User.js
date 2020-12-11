@@ -26,13 +26,11 @@ const UserSchema = new mongoose.Schema({
     address: {
         type: String
     },
-    credit_card: {
-        type: Number
-    },
-    token: {
+    
+    /* token: {
         type: String,
         require: true
-    },
+    }, */
     role: {
         type: String,
         enum : ['user','admin'],
