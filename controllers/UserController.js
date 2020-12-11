@@ -40,6 +40,20 @@ async Login (req,res) {
             })
         }
     }
+},
+
+async Logout (req,res) {
+    try {
+        const token = req.header('Authorization').replace('Bearer ', '');
+
+        await UserModel.findOneAndUpdate({ token: token }, { token: null });
+
+        res.send({message: 'Session finished'});
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({ message: 'Something went wrong logging out' });
+      }
 }
 
 
