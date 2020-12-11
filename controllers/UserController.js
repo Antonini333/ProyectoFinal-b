@@ -54,6 +54,21 @@ async Logout (req,res) {
         console.log(error)
         res.status(500).send({ message: 'Something went wrong logging out' });
       }
+},
+
+async Delete(req,res) {
+    try{
+        const token = req.header('Authorization').replace('Bearer ', '');
+        const user = await UserModel.findOneAndDelete({ token: token });
+        res.send({
+            message: "User successfully deleted", user})
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({
+            message: "Something went wrong deleting user",
+            error
+        })
+    }
 }
 
 
