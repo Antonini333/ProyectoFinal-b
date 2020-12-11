@@ -27,10 +27,10 @@ const UserSchema = new mongoose.Schema({
         type: String
     },
     
-    /* token: {
+    token: {
         type: String,
         require: true
-    }, */
+    },
     role: {
         type: String,
         enum : ['user','admin'],

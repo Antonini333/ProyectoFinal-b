@@ -8,13 +8,14 @@ const UserController = {
  async Register(req, res) {  
         try {
         const user = await UserModel.create(req.body);
-        res.send({ user, message: 'User successfully created'});
+        res.send(user);
        } catch (error){
            console.error(error);
            res.status(500).send({message: 'User already exists', error})
        }
-
 }
+
+
 }
 
 
