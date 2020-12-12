@@ -4,6 +4,18 @@ const jwt = require('jsonwebtoken');
 
 
 const UserController = {
+
+    async GetAll(req,res) { 
+        try {
+        const users = await UserModel.find();
+        res.send(users);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({
+            message: 'Something went wrong collecting users'
+        })
+    }
+    },
     
  async Register(req, res) {  
         try {
