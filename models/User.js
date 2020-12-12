@@ -26,14 +26,14 @@ const UserSchema = new mongoose.Schema({
     address: {
         type: String
     },
-    
+
     token: {
         type: String,
         require: true
     },
     role: {
         type: String,
-        enum : ['user','admin'],
+        enum: ['user', 'admin'],
         default: 'user'
     },
     userId: {
@@ -48,13 +48,13 @@ UserSchema.methods.toJSON = function () {
     return user;
 };
 
-UserSchema.pre('save', async function (next){
+UserSchema.pre('save', async function (next) {
     try {
 
-    const user = this;
-    user.password = await bcrypt.hash(user.password, 9);
-    next()
-    } catch (error){
+        const user = this;
+        user.password = await bcrypt.hash(user.password, 9);
+        next()
+    } catch (error) {
         console.error(error)
     }
 });
