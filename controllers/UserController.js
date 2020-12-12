@@ -29,7 +29,8 @@ const UserController = {
 
 async Login (req,res) {
     let userFound = await UserModel.findOne({
-        email: req.body.email
+        email: req.body.email,
+        password:req.body.password
         
     });
     if(!userFound) {
@@ -81,6 +82,20 @@ async Delete(req,res) {
             error
         })
     }
+},
+
+async Update (req,res) {
+    try {
+        const token = req.header('Authorization').replace('Bearer ', '');
+        let user = await UserModel.findOneAndUpdate({token:token}, req.body, {new: true});  
+        
+
+        res.send({message: 'Funsiona loko', user});
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({ message: 'Something went wrong updating' });
+      }
 }
 
 
