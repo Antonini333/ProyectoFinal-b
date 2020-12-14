@@ -26,6 +26,12 @@ const UserSchema = new mongoose.Schema({
     address: {
         type: String
     },
+    bio: {
+        type: String
+    },
+    foto: {
+        type: String
+    },
 
     token: {
         type: String,
@@ -36,9 +42,7 @@ const UserSchema = new mongoose.Schema({
         enum: ['user', 'admin'],
         default: 'user'
     },
-    userId: {
-        type: String,
-    }
+    
 });
 
 UserSchema.methods.toJSON = function () {
