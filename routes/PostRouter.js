@@ -6,11 +6,11 @@ const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
 
 
-router.post('/post', PostController.Create);
-router.get('/readposts', PostController.Read);
-router.put('/updatepost', PostController.Update);
-router.delete('/deletepost', PostController.Delete);
+router.post('/post', auth, PostController.Create);
+router.get('/readposts', auth, PostController.Read);
+router.put('/updatepost', auth, PostController.Update);
+router.delete('/deletepost', auth, PostController.Delete);
 
-router.get('/readallposts', PostController.ReadAll);
+router.get('/readallposts', auth, PostController.ReadAll);
 
 module.exports = router;
