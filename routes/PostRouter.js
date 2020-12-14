@@ -7,6 +7,7 @@ const admin = require("../middleware/admin");
 
 
 router.post('/post', PostController.Create);
+router.get('/readPost', PostController.Read);
 
 
 module.exports = router;

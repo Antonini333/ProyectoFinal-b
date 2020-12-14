@@ -20,6 +20,21 @@ const PostController = {
                 error
             })
         }
+    },
+
+    async Read (req, res) {
+try{
+    const readPost = await PostModel.find({
+        userId: req.body.userId
+    })
+    res.send({readPost});
+}
+catch{
+    console.error(error);
+    res.status(500).send({
+      message: 'There was a problem showing your posts.'
+    })
+}
     }
 
 }
