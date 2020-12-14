@@ -27,10 +27,7 @@ const UserController = {
             });
 
 
-            res.send({
-                message: 'Funsiona loko',
-                user
-            });
+            res.send(user);
 
         } catch (error) {
             console.log(error)
