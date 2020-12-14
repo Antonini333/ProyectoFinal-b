@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
+
+const Schema = mongoose.Schema;
 
 const PostSchema = new mongoose.Schema({
 
@@ -7,8 +8,8 @@ const PostSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    postedBy: {
-        type: ObjectId,
+    userId: {
+        type: Schema.Types.ObjectId, ref: 'User',
         require: true
     },
     date: {
@@ -20,10 +21,16 @@ const PostSchema = new mongoose.Schema({
     },
     comments: {
         type: Array,
-        default: []
     }
     
 });
+
+PostSchema.post("find",async function(docs){
+    for (let doc of docs) {
+        await doc.populate("postedBy").execPopulate();
+    
+    }
+})
 
 PostSchema.methods.toJSON = function () {
     const post = this.toObject();

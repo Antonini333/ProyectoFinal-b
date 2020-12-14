@@ -6,4 +6,7 @@ const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
 
 
-router.post('/post/create', PostController.Create);
+router.post('/post', PostController.Create);
+
+
+module.exports = router;

@@ -1,18 +1,18 @@
 const PostModel = require('../models/Post');
 const { ObjectId } = require('mongodb');
 
+
 const PostController = {
 
-
-    async Create(req, res) {
+ async Create(req, res) {
         try {
-            const post = await PostModel.create({
-                post: req.body,
-                postedBy: ObjectId(req.user._id),
+            const newPost = await PostModel.create({
+                post: req.body.post,
+                userId: req.body.userId,
                 date: new Date,
 
             });
-            res.send(post);
+            res.send(newPost);
         } catch (error) {
             console.error(error);
             res.status(500).send({

@@ -31,3 +31,4 @@ app.options('/*', (req, res) => res.send());
 
 // Routes
 app.use(require("./routes/UserRouter"));
+app.use(require("./routes/PostRouter"));
