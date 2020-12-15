@@ -4,11 +4,11 @@ const ObjectId = mongoose.Types.ObjectId;
 const FollowSchema = new mongoose.Schema({
 
     from: {
-        type: ObjectId,
+        type: Schema.Types.ObjectId, ref: 'User',
         require: true
     },
     to: {
-        type: ObjectId,
+        type: Schema.Types.ObjectId, ref: 'User',
         require: true
     }
 });
@@ -19,5 +19,5 @@ FollowSchema.methods.toJSON = function () {
     return follow;
 };
 
-const FollowModel = mongoose.model("follow", FollowSchema);
+const FollowModel = mongoose.model("Follow", FollowSchema);
 module.exports = FollowModel;

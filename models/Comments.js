@@ -4,7 +4,7 @@ const ObjectId = mongoose.Types.ObjectId;
 const CommentSchema = new mongoose.Schema({
 
     from: {
-        type: ObjectId,
+        type: Schema.Types.ObjectId, ref: 'User',
         require: true
     },
     message: {
@@ -12,7 +12,7 @@ const CommentSchema = new mongoose.Schema({
         require: true
     },
     to: {
-        type: ObjectId,
+        type: Schema.Types.ObjectId, ref: 'Post',
         require: true
     }
 });
@@ -23,5 +23,5 @@ FollowSchema.methods.toJSON = function () {
     return follow;
 };
 
-const FollowModel = mongoose.model("follow", FollowSchema);
-module.exports = FollowModel;
+const CommentModel = mongoose.model("Comment", CommentSchema);
+module.exports = CommentModel;

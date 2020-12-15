@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
+const Schema = mongoose.Schema;
 
 const LikeSchema = new mongoose.Schema({
 
     from: {
-        type: ObjectId,
+        type: Schema.Types.ObjectId, ref: 'User',
         require: true
     },
     to: {
-        type: ObjectId,
+        type: Schema.Types.ObjectId, ref: 'Post',
         require: true
     }
 });

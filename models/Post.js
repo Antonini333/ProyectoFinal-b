@@ -16,8 +16,7 @@ const PostSchema = new mongoose.Schema({
         type: Date
     },
     likes: {
-        type: Number,
-        default: 0
+        type: Array
     },
     comments: {
         type: Array,
@@ -38,5 +37,5 @@ PostSchema.methods.toJSON = function () {
     return post;
 };
 
-const PostModel = mongoose.model("post", PostSchema);
+const PostModel = mongoose.model("Post", PostSchema);
 module.exports = PostModel;
