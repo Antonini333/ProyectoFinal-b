@@ -19,5 +19,5 @@ LikeSchema.methods.toJSON = function () {
     return like;
 };
 
-const LikeModel = mongoose.model("like", LikeSchema);
+const LikeModel = mongoose.model("Like", LikeSchema);
 module.exports = LikeModel;

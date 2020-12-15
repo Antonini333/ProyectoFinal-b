@@ -18,6 +18,9 @@ const PostSchema = new mongoose.Schema({
     likes: {
         type: Array
     },
+    likesCount: {
+        type: Number
+    },
     comments: {
         type: Array,
     }
