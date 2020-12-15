@@ -78,21 +78,18 @@ const UserController = {
 
     async Login(req, res) {
         let userFound = await UserModel.findOne({
-            email: req.body.email,
-            password: req.body.password
-
+            email: req.body.email
         });
         if (!userFound) {
-            res.status(400).send({
-                message: "Wrong credentials",
-
+            res.status(404).send({
+                message: "You're not registered",
             })
         } else {
             const isMatch = await bcrypt.compare(req.body.password, userFound.password);
             if (isMatch) {
 
                 const token = jwt.sign({
-                    id: userFound.id
+                    _id: userFound._id
                 }, "mymotherpetsme", {
                     expiresIn: '30d'
                 })
@@ -102,7 +99,7 @@ const UserController = {
                 res.send(userFound);
             } else {
                 return res.status(400).send({
-                    message: "Wrong credentials"
+                    message: "Token error"
                 })
             }
         }
