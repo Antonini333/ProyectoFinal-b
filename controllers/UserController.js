@@ -76,10 +76,10 @@ const UserController = {
         }
     },
 
-    async Login(req, res) {
-        let userFound = await UserModel.findOne({
-            email: req.body.email
-        });
+    async Login(req, res, next) {
+        let userFound = await UserModel.findOne({email: req.body.email}).populate('following', '_id name')
+        .populate('followers', '_id name')
+        .exec();
         if (!userFound) {
             res.status(404).send({
                 message: "You're not registered",
@@ -95,8 +95,9 @@ const UserController = {
                 })
                 userFound.token = token;
                 await userFound.replaceOne(userFound);
-
                 res.send(userFound);
+                req.user = userFound
+                next()
             } else {
                 return res.status(400).send({
                     message: "Token error"
@@ -126,6 +127,22 @@ const UserController = {
             });
         }
     },
+
+    async addFollower (req, res) {
+        try{
+          let result = await User.findByIdAndUpdate(req.body.followId, {$push: {followers: req.body.userId}}, {new: true})
+                                  .populate('following', '_id name')
+                                  .populate('followers', '_id name')
+                                  .exec()
+            res.send(result)
+          }catch(error) {
+            res.status(500).send({
+              message: "Something went wrong following this user"
+            })
+          }  
+      },
+
+      
 
     async ReadAll(req, res) {
         try {

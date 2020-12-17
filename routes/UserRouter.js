@@ -16,6 +16,8 @@ router.delete('/user/delete', auth, UserController.Delete);
 router.post('/user/login', UserController.Login);
 router.post('/user/logout', auth, UserController.Logout);
 
+router.post('/user/follow', UserController.addFollower)
+
 
 /* ADMIN */
 router.get('/users', auth, admin, UserController.ReadAll);
