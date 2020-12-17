@@ -29,10 +29,10 @@ const UserSchema = new mongoose.Schema({
     bio: {
         type: String
     },
-    foto: {
-        type: String
-    },
-
+    photo: {
+        data: Buffer,
+        contentType: String
+      },
     token: {
         type: String
     },
@@ -41,6 +41,9 @@ const UserSchema = new mongoose.Schema({
         enum: ['user', 'admin'],
         default: 'user'
     },
+
+    following: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
+    followers: [{type: mongoose.Schema.ObjectId, ref: 'User'}]
     
 });
 

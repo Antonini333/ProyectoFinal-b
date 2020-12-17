@@ -4,28 +4,31 @@ const Schema = mongoose.Schema;
 
 const PostSchema = new mongoose.Schema({
 
-    post: {
+    text: {
         type: String,
-        require: true
-    },
-    userId: {
-        type: Schema.Types.ObjectId, ref: 'User',
-        require: true
-    },
-    date: {
-        type: Date
-    },
-    likes: {
-        type: Array
-    },
-    likesCount: {
-        type: Number
-    },
-    comments: {
-        type: Array,
-    }
+        required: 'Text is required'
+      },
+      photo: {
+        data: Buffer,
+        contentType: String
+      },
+      likes: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
+      likeCount: {
+          type: Integer
+      },
+      comments: [{
+        text: String,
+        created: { type: Date, default: Date.now },
+        postedBy: { type: mongoose.Schema.ObjectId, ref: 'User'}
+      }],
+      postedBy: {type: mongoose.Schema.ObjectId, ref: 'User'},
+      created: {
+        type: Date,
+        default: Date.now
+      }
+    });
     
-});
+
 
 PostSchema.post("find",async function(docs){
     for (let doc of docs) {

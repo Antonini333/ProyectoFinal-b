@@ -1,4 +1,5 @@
 const LikeModel = require('../models/Like');
+const UserModel = require('../models/User');
 
 const LikeController = {
 
@@ -18,6 +19,15 @@ const LikeController = {
                 error
             })
         }
+    },
+
+    async Likear(req,res) {
+        const User = await UserModel.findById({
+            _id: req.body._id
+        });
+        User.find({
+            'post._id' : req.params._id
+        })
     }
 }
 
