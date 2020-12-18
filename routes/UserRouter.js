@@ -16,7 +16,7 @@ router.delete('/user/delete', auth, UserController.Delete);
 router.post('/user/login', UserController.Login);
 router.post('/user/logout', auth, UserController.Logout);
 
-router.post('/user/follow', UserController.addFollower)
+router.put('/user/follow', auth, UserController.addFollower)
 
 
 /* ADMIN */

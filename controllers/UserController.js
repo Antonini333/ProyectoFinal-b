@@ -76,7 +76,7 @@ const UserController = {
         }
     },
 
-    async Login(req, res, next) {
+    async Login(req, res) {
         let userFound = await UserModel.findOne({email: req.body.email}).populate('following', '_id name')
         .populate('followers', '_id name')
         .exec();
@@ -96,8 +96,7 @@ const UserController = {
                 userFound.token = token;
                 await userFound.replaceOne(userFound);
                 res.send(userFound);
-                req.user = userFound
-                next()
+                
             } else {
                 return res.status(400).send({
                     message: "Token error"
@@ -130,8 +129,32 @@ const UserController = {
 
     async addFollower (req, res) {
         try{
-          let result = await User.findByIdAndUpdate(req.body.followId, {$push: {followers: req.body.userId}}, {new: true})
+            const token = req.header('Authorization').replace('Bearer ', '');   //Busco al usuario logueado con token
+            let user = await UserModel.findOne({
+                token: token
+            });
+          let result = await UserModel.findByIdAndUpdate(req.body.followId, {$push: {followers: user._id}}, {new: true})  // Populo con el _id de user el array de "followers" del usuario seguido.
+                                  
+                                  .populate('followers', '_id name')
+                                  .exec()
+        let resultOK = await UserModel.findByIdAndUpdate(user._id, {$push: {following: req.body.followId}}, {new: true})  // Populo con el id del usuario seguido el array de "following" de user.
                                   .populate('following', '_id name')
+                                  .exec()
+            res.send(result)
+          }catch(error) {
+            res.status(500).send({
+              message: "Something went wrong following this user"
+            })
+          }  
+      },
+
+      async addFollowing (req, res) {
+        try{
+            const token = req.header('Authorization').replace('Bearer ', '');   //Busco al usuario logueado con token
+            let user = await UserModel.findOne({
+                token: token
+            });
+          let resultOK = await UserModel.findByIdAndUpdate(user._id, {$push: {followers: req.body.followId}}, {new: true})  // Populo con el user._id el array de "followers" del usuario seguido.
                                   .populate('followers', '_id name')
                                   .exec()
             res.send(result)

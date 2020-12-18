@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const {ObjectId} = mongoose.Schema.Types
 const UserSchema = new mongoose.Schema({
 
     name: {
@@ -42,8 +43,8 @@ const UserSchema = new mongoose.Schema({
         default: 'user'
     },
 
-    following: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
-    followers: [{type: mongoose.Schema.ObjectId, ref: 'User'}]
+    following: [{type: ObjectId, ref: 'User'}],
+    followers: [{type: ObjectId, ref: 'User'}]
     
 });
 
