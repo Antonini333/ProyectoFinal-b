@@ -102,9 +102,11 @@ catch{
             let user = await UserModel.findOne({
                 token: token
             });
-          let findPost = await PostModel.findByIdAndUpdate(req.body.postId, {$push: {likes: user._id}}, {new: true})  // Populo con el _id de user el array de "likes" del post.
-                                  .populate('likes', '_id name')
-                                  .exec()
+          let findPost = await PostModel.findByIdAndUpdate(req.body.postId,  { $push: { 
+            likes: user._id
+          },
+     $inc: { likeCount: 1 } 
+  }, {new: true });
         
             res.send(findPost)
           }catch(error) {
