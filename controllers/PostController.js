@@ -1,14 +1,21 @@
 const PostModel = require('../models/Post');
+const UserModel = require('../models/User');
 const { ObjectId } = require('mongodb');
 
 
 const PostController = {
 
+    
+
  async Create(req, res) {
         try {
+            const token = req.header('Authorization').replace('Bearer ', '');   //Busco al usuario logueado con token
+            let user = await UserModel.findOne({
+                token: token
+            });
             const newPost = await PostModel.create({
-                post: req.body.post,
-                userId: req.body.userId,
+                text: req.body.text,
+                postedBy: user._id,
                 date: new Date,
 
             });
@@ -23,9 +30,14 @@ const PostController = {
     },
 
     async Read (req, res) {
+
 try{
+    const token = req.header('Authorization').replace('Bearer ', '');   //Busco al usuario logueado con token
+            let user = await UserModel.findOne({
+                token: token
+            });
     const readPost = await PostModel.find({
-        userId: req.body.userId
+        postedBy: user._id
     })
     res.send({readPost});
 }
@@ -40,7 +52,7 @@ catch{
     async Update(req, res) {
         try {
             let updatePost = await PostModel.findOneAndUpdate({
-                _id: req.body._id
+                _id: req.body.postId
             }, req.body, {
                 new: true
             });
@@ -57,7 +69,7 @@ catch{
     async Delete(req, res) {
         try {
             let deletePost = await PostModel.findOneAndDelete({
-                _id: req.body._id
+                _id: req.body.PostId
             });
             res.send({
                 message: "Post successfully deleted",
@@ -82,6 +94,42 @@ catch{
                 message: 'Something went wrong collecting the posts'
             })
         }
+    },
+
+    async Like (req, res) {
+        try{
+            const token = req.header('Authorization').replace('Bearer ', '');   //Busco al usuario logueado con token
+            let user = await UserModel.findOne({
+                token: token
+            });
+          let findPost = await PostModel.findByIdAndUpdate(req.body.postId, {$push: {likes: user._id}}, {new: true})  // Populo con el _id de user el array de "followers" del usuario seguido.
+                                  .populate('likes', '_id name')
+                                  .exec()
+        
+            res.send(findPost)
+          }catch(error) {
+            res.status(500).send({
+              message: "Something went wrong liking this post"
+            })
+          }  
+    },
+
+    async Unlike (req, res) {
+        try{
+            const token = req.header('Authorization').replace('Bearer ', '');   //Busco al usuario logueado con token
+            let user = await UserModel.findOne({
+                token: token
+            });
+          let findPost = await PostModel.findByIdAndUpdate(req.body.postId, {$pull: {likes: user._id}}, {new: true})  // Populo con el _id de user el array de "followers" del usuario seguido.
+                                  .populate('likes', '_id name')
+                                  .exec()
+        
+            res.send(findPost)
+          }catch(error) {
+            res.status(500).send({
+              message: "Something went wrong liking this post"
+            })
+          }  
     }
 
 }

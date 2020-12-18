@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema;
+const {ObjectId} = mongoose.Schema.Types
 
 const PostSchema = new mongoose.Schema({
 
@@ -12,7 +12,7 @@ const PostSchema = new mongoose.Schema({
         data: Buffer,
         contentType: String
       },
-      likes: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
+      likes: [{type: ObjectId, ref: 'User'}],
       likeCount: {
           type: Number
       },
@@ -21,7 +21,7 @@ const PostSchema = new mongoose.Schema({
         created: { type: Date, default: Date.now },
         postedBy: { type: mongoose.Schema.ObjectId, ref: 'User'}
       }],
-      postedBy: {type: mongoose.Schema.ObjectId, ref: 'User'},
+      postedBy: {type: ObjectId, ref: 'User'},
       created: {
         type: Date,
         default: Date.now
@@ -29,13 +29,6 @@ const PostSchema = new mongoose.Schema({
     });
     
 
-
-PostSchema.post("find",async function(docs){
-    for (let doc of docs) {
-        await doc.populate("postedBy").execPopulate();
-    
-    }
-})
 
 PostSchema.methods.toJSON = function () {
     const post = this.toObject();
