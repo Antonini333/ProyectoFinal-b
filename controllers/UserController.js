@@ -127,7 +127,7 @@ const UserController = {
         }
     },
 
-    async addFollower (req, res) {
+    async Follow (req, res) {
         try{
             const token = req.header('Authorization').replace('Bearer ', '');   //Busco al usuario logueado con token
             let user = await UserModel.findOne({
@@ -148,14 +148,18 @@ const UserController = {
           }  
       },
 
-      async addFollowing (req, res) {
+      async Unfollow (req, res) {
         try{
             const token = req.header('Authorization').replace('Bearer ', '');   //Busco al usuario logueado con token
             let user = await UserModel.findOne({
                 token: token
             });
-          let resultOK = await UserModel.findByIdAndUpdate(user._id, {$push: {followers: req.body.followId}}, {new: true})  // Populo con el user._id el array de "followers" del usuario seguido.
+          let result = await UserModel.findByIdAndUpdate(req.body.followId, {$pull: {followers: user._id}}, {new: true})  // Populo con el _id de user el array de "followers" del usuario seguido.
+                                  
                                   .populate('followers', '_id name')
+                                  .exec()
+        let resultOK = await UserModel.findByIdAndUpdate(user._id, {$pull: {following: req.body.followId}}, {new: true})  // Populo con el id del usuario seguido el array de "following" de user.
+                                  .populate('following', '_id name')
                                   .exec()
             res.send(result)
           }catch(error) {
