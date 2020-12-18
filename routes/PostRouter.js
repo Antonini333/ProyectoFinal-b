@@ -12,6 +12,7 @@ router.put('/updatepost', auth, PostController.Update);
 router.delete('/deletepost', auth, PostController.Delete);
 router.put('/likepost', auth, PostController.Like);
 router.put('/unlikepost', auth, PostController.Unlike);
+router.put('/commentpost', auth, PostController.Comment);
 
 router.get('/readallposts', PostController.ReadAll);
 

@@ -19,8 +19,11 @@ const PostSchema = new mongoose.Schema({
       comments: [{
         text: String,
         created: { type: Date, default: Date.now },
-        postedBy: { type: mongoose.Schema.ObjectId, ref: 'User'}
+        postedBy: { type: ObjectId, ref: 'User'}
       }],
+      commentCount : {
+        type: Number
+      },
       postedBy: {type: ObjectId, ref: 'User'},
       created: {
         type: Date,

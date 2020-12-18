@@ -77,9 +77,7 @@ const UserController = {
     },
 
     async Login(req, res) {
-        let userFound = await UserModel.findOne({email: req.body.email}).populate('following', '_id name')
-        .populate('followers', '_id name')
-        .exec();
+        let userFound = await UserModel.findOne({email: req.body.email})
         if (!userFound) {
             res.status(404).send({
                 message: "You're not registered",

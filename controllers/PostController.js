@@ -102,7 +102,7 @@ catch{
             let user = await UserModel.findOne({
                 token: token
             });
-          let findPost = await PostModel.findByIdAndUpdate(req.body.postId, {$push: {likes: user._id}}, {new: true})  // Populo con el _id de user el array de "followers" del usuario seguido.
+          let findPost = await PostModel.findByIdAndUpdate(req.body.postId, {$push: {likes: user._id}}, {new: true})  // Populo con el _id de user el array de "likes" del post.
                                   .populate('likes', '_id name')
                                   .exec()
         
@@ -120,7 +120,7 @@ catch{
             let user = await UserModel.findOne({
                 token: token
             });
-          let findPost = await PostModel.findByIdAndUpdate(req.body.postId, {$pull: {likes: user._id}}, {new: true})  // Populo con el _id de user el array de "followers" del usuario seguido.
+          let findPost = await PostModel.findByIdAndUpdate(req.body.postId, {$pull: {likes: user._id}}, {new: true})  // Extraigo el _id de user el array de "likes" del post.
                                   .populate('likes', '_id name')
                                   .exec()
         
@@ -130,7 +130,29 @@ catch{
               message: "Something went wrong liking this post"
             })
           }  
-    }
+    },
+
+    async Comment (req, res) {
+        try{
+            const token = req.header('Authorization').replace('Bearer ', '');   //Busco al usuario logueado con token
+            let user = await UserModel.findOne({
+                token: token
+            });
+            let findPost = await PostModel.findByIdAndUpdate(req.body.postId,  { $push: { 
+                comments: {
+                  "text" : req.body.text,
+                  "postedBy" : user._id
+                  }  
+              },
+         $inc: { commentCount: 1 } 
+      }, {new: true });
+      res.send(findPost)
+          }catch(error) {
+            res.status(500).send({
+              message: "Something went wrong liking this post"
+            })
+          }  
+    },
 
 }
 
