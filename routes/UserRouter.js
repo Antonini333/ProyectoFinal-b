@@ -12,7 +12,7 @@ router.get('/user', auth, UserController.Read);
 router.put('/user/update', auth, UserController.Update);
 router.delete('/user/delete', auth, UserController.Delete);
 
-
+/* ACTIONS */
 router.post('/user/login', UserController.Login);
 router.post('/user/logout', auth, UserController.Logout);
 

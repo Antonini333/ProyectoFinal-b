@@ -1,15 +1,15 @@
 const PostModel = require('../models/Post');
 const UserModel = require('../models/User');
-const { ObjectId } = require('mongodb');
+
 
 
 const PostController = {
 
-    
 
- async Create(req, res) {
+
+    async Create(req, res) {
         try {
-            const token = req.header('Authorization').replace('Bearer ', '');   //Busco al usuario logueado con token
+            const token = req.header('Authorization').replace('Bearer ', ''); //Busco al usuario logueado con token
             let user = await UserModel.findOne({
                 token: token
             });
@@ -29,24 +29,25 @@ const PostController = {
         }
     },
 
-    async Read (req, res) {
+    async Read(req, res) {
 
-try{
-    const token = req.header('Authorization').replace('Bearer ', '');   //Busco al usuario logueado con token
+        try {
+            const token = req.header('Authorization').replace('Bearer ', ''); //Busco al usuario logueado con token
             let user = await UserModel.findOne({
                 token: token
             });
-    const readPost = await PostModel.find({
-        postedBy: user._id
-    })
-    res.send({readPost});
-}
-catch{
-    console.error(error);
-    res.status(500).send({
-      message: 'There was a problem showing your posts.'
-    })
-}
+            const readPost = await PostModel.find({
+                postedBy: user._id
+            })
+            res.send({
+                readPost
+            });
+        } catch {
+            console.error(error);
+            res.status(500).send({
+                message: 'There was a problem showing your posts.'
+            })
+        }
     },
 
     async Update(req, res) {
@@ -69,7 +70,7 @@ catch{
     async Delete(req, res) {
         try {
             let deletePost = await PostModel.findOneAndDelete({
-                _id: req.body.PostId
+                _id: req.params._id
             });
             res.send({
                 message: "Post successfully deleted",
@@ -96,64 +97,81 @@ catch{
         }
     },
 
-    async Like (req, res) {
-        try{
-            const token = req.header('Authorization').replace('Bearer ', '');   //Busco al usuario logueado con token
+    async Like(req, res) {
+        try {
+            const token = req.header('Authorization').replace('Bearer ', ''); //Busco al usuario logueado con token
             let user = await UserModel.findOne({
                 token: token
             });
-          let findPost = await PostModel.findByIdAndUpdate(req.body.postId,  { $push: { 
-            likes: user._id
-          },
-     $inc: { likeCount: 1 } 
-  }, {new: true });
-        
+            let findPost = await PostModel.findByIdAndUpdate(req.params.id, {
+                $push: {
+                    likes: user._id
+                },
+                $inc: {
+                    likeCount: 1
+                }
+            }, {
+                new: true
+            });
+
             res.send(findPost)
-          }catch(error) {
+        } catch (error) {
             res.status(500).send({
-              message: "Something went wrong liking this post"
+                message: "Something went wrong liking this post"
             })
-          }  
+        }
     },
 
-    async Unlike (req, res) {
-        try{
-            const token = req.header('Authorization').replace('Bearer ', '');   //Busco al usuario logueado con token
+    async Unlike(req, res) {
+        try {
+            const token = req.header('Authorization').replace('Bearer ', ''); //Busco al usuario logueado con token
             let user = await UserModel.findOne({
                 token: token
             });
-          let findPost = await PostModel.findByIdAndUpdate(req.body.postId, {$pull: {likes: user._id}}, {new: true})  // Extraigo el _id de user el array de "likes" del post.
-                                  .populate('likes', '_id name')
-                                  .exec()
-        
+            let findPost = await PostModel.findByIdAndUpdate(req.body.postId, {
+                $pull: {
+                    likes: user._id
+                },
+                $inc: {
+                    likeCount: -1
+                }
+            }, {
+                new: true
+            });
+
             res.send(findPost)
-          }catch(error) {
+        } catch (error) {
             res.status(500).send({
-              message: "Something went wrong liking this post"
+                message: "Something went wrong liking this post"
             })
-          }  
+        }
     },
 
-    async Comment (req, res) {
-        try{
-            const token = req.header('Authorization').replace('Bearer ', '');   //Busco al usuario logueado con token
+    async Comment(req, res) {
+        try {
+            const token = req.header('Authorization').replace('Bearer ', ''); //Busco al usuario logueado con token
             let user = await UserModel.findOne({
                 token: token
             });
-            let findPost = await PostModel.findByIdAndUpdate(req.body.postId,  { $push: { 
-                comments: {
-                  "text" : req.body.text,
-                  "postedBy" : user._id
-                  }  
-              },
-         $inc: { commentCount: 1 } 
-      }, {new: true });
-      res.send(findPost)
-          }catch(error) {
+            let findPost = await PostModel.findByIdAndUpdate(req.body.postId, {
+                $push: {
+                    comments: {
+                        "text": req.body.text,
+                        "postedBy": user._id
+                    }
+                },
+                $inc: {
+                    commentCount: 1
+                }
+            }, {
+                new: true
+            });
+            res.send(findPost)
+        } catch (error) {
             res.status(500).send({
-              message: "Something went wrong liking this post"
+                message: "Something went wrong liking this post"
             })
-          }  
+        }
     },
 
 }
