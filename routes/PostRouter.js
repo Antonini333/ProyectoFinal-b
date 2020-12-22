@@ -14,7 +14,7 @@ router.delete('/deletepost', auth, PostController.Delete);
 /* ACTIONS */
 router.put('/likepost/:_id', auth, PostController.Like);
 router.put('/unlikepost', auth, PostController.Unlike);
-router.put('/commentpost', auth, PostController.Comment);
+router.put('/commentpost/:_id', auth, PostController.Comment);
 
 router.get('/readallposts', PostController.ReadAll);
 
