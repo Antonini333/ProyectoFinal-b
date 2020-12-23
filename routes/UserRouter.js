@@ -21,7 +21,7 @@ router.put('/user/unfollow/:_id', auth, UserController.Unfollow);
 
 
 /* ADMIN */
-router.get('/users', auth, admin, UserController.ReadAll);
+router.get('/users',  UserController.ReadAll);
 
 
 
