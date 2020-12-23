@@ -17,7 +17,7 @@ router.post('/user/login', UserController.Login);
 router.post('/user/logout', auth, UserController.Logout);
 
 router.put('/user/follow/:_id', auth, UserController.Follow);
-router.put('/user/unfollow', auth, UserController.Unfollow);
+router.put('/user/unfollow/:_id', auth, UserController.Unfollow);
 
 
 /* ADMIN */

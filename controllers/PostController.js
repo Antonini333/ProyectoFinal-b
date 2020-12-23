@@ -128,7 +128,7 @@ const PostController = {
             let user = await UserModel.findOne({
                 token: token
             });
-            let findPost = await PostModel.findByIdAndUpdate(req.body.postId, {
+            let findPost = await PostModel.findByIdAndUpdate(req.params._id, {
                 $pull: {
                     likes: user._id
                 },
