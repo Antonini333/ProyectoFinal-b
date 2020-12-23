@@ -16,7 +16,7 @@ router.delete('/user/delete', auth, UserController.Delete);
 router.post('/user/login', UserController.Login);
 router.post('/user/logout', auth, UserController.Logout);
 
-router.put('/user/follow', auth, UserController.Follow);
+router.put('/user/follow/:_id', auth, UserController.Follow);
 router.put('/user/unfollow', auth, UserController.Unfollow);
 
 
