@@ -18,9 +18,6 @@ router.post('/user/logout', auth, UserController.Logout);
 
 router.put('/user/follow/:_id', auth, UserController.Follow);
 router.put('/user/unfollow/:_id', auth, UserController.Unfollow);
-
-
-/* ADMIN */
 router.get('/users',  UserController.ReadAll);
 
 

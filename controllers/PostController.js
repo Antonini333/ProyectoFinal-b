@@ -17,6 +17,8 @@ const PostController = {
                 text: req.body.text,
                 postedBy: user._id,
                 date: new Date,
+                name: user.name,
+                surname: user.surname
 
             });
             res.send(newPost);
@@ -149,30 +151,40 @@ const PostController = {
 
     async Comment(req, res) {
         try {
-            const token = req.header('Authorization').replace('Bearer ', ''); //Busco al usuario logueado con token
+          const token = req.header('Authorization').replace('Bearer ', ''); //Busco al usuario logueado con token
             let user = await UserModel.findOne({
                 token: token
             });
+
+            
             let findPost = await PostModel.findByIdAndUpdate(req.params._id, {
                 $push: {
                     comments: {
                         "text": req.body.text,
+                        "name": user.name,
+                        "surname": user.surname,
                         "postedBy": user._id
                     }
                 },
                 $inc: {
-                    commentCount: 1
+                    commentCount: 1 //
                 }
             }, {
                 new: true
-            });
-            res.send(findPost)
+            })
+
+            res.send(findPost) 
+
+         
+
         } catch (error) {
             res.status(500).send({
                 message: "Something went wrong liking this post"
             })
         }
     },
+
+
 
 }
 

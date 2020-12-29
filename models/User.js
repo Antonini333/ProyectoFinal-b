@@ -31,8 +31,8 @@ const UserSchema = new mongoose.Schema({
         type: String
     },
     photo: {
-        data: Buffer,
-        contentType: String
+        type: String,
+        default: 'https://images.megapixl.com/642/6421863.jpg'
       },
     token: {
         type: String
