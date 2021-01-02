@@ -42,8 +42,12 @@ const UserSchema = new mongoose.Schema({
         enum: ['user', 'admin'],
         default: 'user'
     },
-
-    following: [{type: ObjectId, ref: 'User'}],
+    followers: [{
+        UserId: { type: ObjectId, ref: 'User'},
+        name: String,
+        surname: String
+        
+      }],
     followers: [{type: ObjectId, ref: 'User'}]
     
 });
