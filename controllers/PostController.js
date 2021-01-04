@@ -127,7 +127,7 @@ const PostController = {
     async NewsPosts(req, res) {
         try{
             const newsPosts = await PostModel.find({ 'categorie': "News" })
-            res.send(newPosts);
+            res.send(newsPosts);
         }catch (error) {
             console.error(error);
             res.status(500).send({

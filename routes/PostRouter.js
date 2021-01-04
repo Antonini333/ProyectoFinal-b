@@ -17,7 +17,7 @@ router.put('/unlikepost/:_id', auth, PostController.Unlike);
 
 router.put('/commentpost/:_id', auth, PostController.Comment);
 
-
+/*CATEGORIES*/ 
 router.get('/readallposts', PostController.ReadAll);
 router.get('/readcookingposts', PostController.CookingPosts)
 router.get('/readlifestyleposts', PostController.LifestylePosts)
