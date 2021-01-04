@@ -102,7 +102,7 @@ const PostController = {
 
     async CookingPosts(req, res) {
         try{
-            const cookingPosts = await PostModel.find({ 'categorie': "cooking" })
+            const cookingPosts = await PostModel.find({ 'categorie': "Cooking" })
             res.send(cookingPosts);
         }catch (error) {
             console.error(error);
@@ -114,7 +114,7 @@ const PostController = {
 
     async ParentingPosts(req, res) {
         try{
-            const parentingPosts = await PostModel.find({ 'categorie': "parenting" })
+            const parentingPosts = await PostModel.find({ 'categorie': "Parenting" })
             res.send(parentingPosts);
         }catch (error) {
             console.error(error);
@@ -126,7 +126,7 @@ const PostController = {
 
     async NewsPosts(req, res) {
         try{
-            const newsPosts = await PostModel.find({ 'categorie': "news" })
+            const newsPosts = await PostModel.find({ 'categorie': "News" })
             res.send(newPosts);
         }catch (error) {
             console.error(error);
@@ -138,7 +138,7 @@ const PostController = {
 
     async TechnologyPosts(req, res) {
         try{
-            const techPosts = await PostModel.find({ 'categorie': "technology" })
+            const techPosts = await PostModel.find({ 'categorie': "Technology" })
             res.send(techPosts);
         }catch (error) {
             console.error(error);
@@ -150,7 +150,7 @@ const PostController = {
 
     async LifestylePosts(req, res) {
         try{
-            const lifeStylePosts = await PostModel.find({ 'categorie': "lifestyle" })
+            const lifeStylePosts = await PostModel.find({ 'categorie': "Lifestyle" })
             res.send(lifeStylePosts);
         }catch (error) {
             console.error(error);
