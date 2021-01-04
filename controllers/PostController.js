@@ -18,7 +18,8 @@ const PostController = {
                 postedBy: user._id,
                 date: new Date,
                 name: user.name,
-                surname: user.surname
+                surname: user.surname, 
+                categorie: req.body.categorie
 
             });
             res.send(newPost);
@@ -95,6 +96,18 @@ const PostController = {
             console.error(error);
             res.status(500).send({
                 message: 'Something went wrong collecting the posts'
+            })
+        }
+    },
+
+    async Cooking(req, res) {
+        try{
+            const cookingPosts = await PostModel.find({ 'text': "MENSAJE PAJA" })
+            res.send(cookingPosts);
+        }catch (error) {
+            console.error(error);
+            res.status(500).send({
+                message: 'Something went wrong collecting the cooking posts'
             })
         }
     },

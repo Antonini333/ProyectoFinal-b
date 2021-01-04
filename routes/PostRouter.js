@@ -19,5 +19,6 @@ router.put('/commentpost/:_id', auth, PostController.Comment);
 
 
 router.get('/readallposts', PostController.ReadAll);
+router.get('/readcookingposts', PostController.Cooking)
 
 module.exports = router;

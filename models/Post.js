@@ -12,6 +12,9 @@ const PostSchema = new mongoose.Schema({
         data: Buffer,
         contentType: String
       },
+      categorie: {
+        type: String
+      },
       likes: [{type: ObjectId, ref: 'User'}],
       likeCount: {
           type: Number
