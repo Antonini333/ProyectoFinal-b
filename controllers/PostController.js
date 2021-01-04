@@ -100,14 +100,62 @@ const PostController = {
         }
     },
 
-    async Cooking(req, res) {
+    async CookingPosts(req, res) {
         try{
-            const cookingPosts = await PostModel.find({ 'text': "MENSAJE PAJA" })
+            const cookingPosts = await PostModel.find({ 'categorie': "cooking" })
             res.send(cookingPosts);
         }catch (error) {
             console.error(error);
             res.status(500).send({
                 message: 'Something went wrong collecting the cooking posts'
+            })
+        }
+    },
+
+    async ParentingPosts(req, res) {
+        try{
+            const parentingPosts = await PostModel.find({ 'categorie': "parenting" })
+            res.send(parentingPosts);
+        }catch (error) {
+            console.error(error);
+            res.status(500).send({
+                message: 'Something went wrong collecting the parenting posts'
+            })
+        }
+    },
+
+    async NewsPosts(req, res) {
+        try{
+            const newsPosts = await PostModel.find({ 'categorie': "news" })
+            res.send(newPosts);
+        }catch (error) {
+            console.error(error);
+            res.status(500).send({
+                message: 'Something went wrong collecting the news posts'
+            })
+        }
+    },
+
+    async TechnologyPosts(req, res) {
+        try{
+            const techPosts = await PostModel.find({ 'categorie': "technology" })
+            res.send(techPosts);
+        }catch (error) {
+            console.error(error);
+            res.status(500).send({
+                message: 'Something went wrong collecting the technology posts'
+            })
+        }
+    },
+
+    async LifestylePosts(req, res) {
+        try{
+            const lifeStylePosts = await PostModel.find({ 'categorie': "lifestyle" })
+            res.send(lifeStylePosts);
+        }catch (error) {
+            console.error(error);
+            res.status(500).send({
+                message: 'Something went wrong collecting the lifestyle posts'
             })
         }
     },
