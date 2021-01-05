@@ -48,6 +48,9 @@ const UserSchema = new mongoose.Schema({
         surname: String
         
       }],
+      followCount: {
+          type: Number
+      },
       following: [{
         UserId: { type: ObjectId, ref: 'User'},
         name: String,

@@ -131,7 +131,7 @@ const UserController = {
             let user = await UserModel.findOne({
                 token: token
             });
-          let result = await UserModel.findByIdAndUpdate(req.params._id, {$push: {followers: user._id}}, {new: true})  // Populo con el _id de user el array de "followers" del usuario seguido.
+          let result = await UserModel.findByIdAndUpdate(req.params._id, {$push: {followers: user._id}, $inc:{ followCount: 1}}, {new: true})  // Populo con el _id de user el array de "followers" del usuario seguido.
                                   .populate('followers', '_id name surname')
                                   .exec()
         let user2 = await UserModel.findById(req.params._id)
