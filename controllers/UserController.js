@@ -131,12 +131,12 @@ const UserController = {
             let user = await UserModel.findOne({
                 token: token
             });
-          let result = await UserModel.findByIdAndUpdate(req.params._id, {$push: {followers: user._id}, $inc:{ followCount: 1}}, {new: true})  // Populo con el _id de user el array de "followers" del usuario seguido.
-                                  .populate('followers', '_id name surname')
+          let result = await UserModel.findByIdAndUpdate(req.params._id, {$push: {followers: {UserId: user._id, name: user.name, surname: user.surname}}, $inc:{ followCount: 1}}, {new: true})  // Populo con el _id de user el array de "followers" del usuario seguido.
+                                  .populate('followers', '_id', 'name', 'surname')
                                   .exec()
         let user2 = await UserModel.findById(req.params._id)
-        let resultOK = await UserModel.findByIdAndUpdate(user._id, {$push: {following: user2._id}}, {new: true})  // Populo con el id del usuario seguido el array de "following" de user.
-                                  .populate('following', '_id name surname')
+        let resultOK = await UserModel.findByIdAndUpdate(user._id, {$push: {following: {UserId: user2._id, name: user2.name, surname: user2.surname}}}, {new: true})  // Populo con el id del usuario seguido el array de "following" de user.
+                                  .populate('following', '_id', 'name', 'surname') 
                                   .exec()
             res.json(result)
             res.json(resultOK)
@@ -154,16 +154,19 @@ const UserController = {
             let user = await UserModel.findOne({
                 token: token
             });
-          let result = await UserModel.findByIdAndUpdate(req.params._id, {$pull: {followers: user._id}}, {new: true})  // Populo con el _id de user el array de "followers" del usuario seguido.
-                                  .populate('followers', '_id name surname')
+          let result = await UserModel.findByIdAndUpdate(req.params._id, {$pull: {followers: {UserId: user._id, name: user.name, surname: user.surname}}, $inc:{ followCount: -1}}, {new: true})  // Populo con el _id de user el array de "followers" del usuario seguido.
+                                  .populate('followers', '_id', 'name', 'surname')
                                   .exec()
-          await UserModel.findByIdAndUpdate(user._id, {$pull: {following: req.params._id}}, {new: true})  // Populo con el id del usuario seguido el array de "following" de user.
-                                  .populate('following', '_id name surname')
+        let user2 = await UserModel.findById(req.params._id)
+        let resultOK = await UserModel.findByIdAndUpdate(user._id, {$pull: {following: {UserId: user2._id, name: user2.name, surname: user2.surname}}}, {new: true})  // Populo con el id del usuario seguido el array de "following" de user.
+                                  .populate('following', '_id', 'name', 'surname') 
                                   .exec()
-            res.send(result)
+            res.json(result)
+            res.json(resultOK)
+            res.send(result, resultOK)
           }catch(error) {
             res.status(500).send({
-              message: "Something went wrong following this user"
+              message: "Something went wrong unfollowing this user"
             })
           }  
       },
