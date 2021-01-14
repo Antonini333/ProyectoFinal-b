@@ -9,7 +9,7 @@ const PostController = {
 
     async Create(req, res) {
         try {
-            const token = req.header('Authorization').replace('Bearer ', ''); //Busco al usuario logueado con token
+            const token = req.header('Authorization').replace('Bearer ', ''); 
             let user = await UserModel.findOne({
                 token: token
             });
@@ -35,16 +35,14 @@ const PostController = {
     async Read(req, res) {
 
         try {
-            const token = req.header('Authorization').replace('Bearer ', ''); //Busco al usuario logueado con token
+            const token = req.header('Authorization').replace('Bearer ', ''); 
             let user = await UserModel.findOne({
                 token: token
             });
-            const readPost = await PostModel.find({
-                postedBy: user._id
-            })
-            res.send({
+            const readPost = await PostModel.findById(req.params._id)
+            res.send(
                 readPost
-            });
+            );
         } catch {
             console.error(error);
             res.status(500).send({
@@ -160,22 +158,18 @@ const PostController = {
         }
     },
 
+
+
     async Like(req, res) {
         try {
-            const token = req.header('Authorization').replace('Bearer ', ''); //Busco al usuario logueado con token
+            const token = req.header('Authorization').replace('Bearer ', ''); 
             let user = await UserModel.findOne({
                 token: token
             });
-            let findPost = await PostModel.findByIdAndUpdate(req.params._id, {
-                $push: {
-                    likes: user._id
-                },
-                $inc: {
-                    likeCount: 1
-                }
-            }, {
-                new: true
-            });
+
+           let findPost= await PostModel.findByIdAndUpdate(req.params._id, {$push: {likes: {UserId: user._id, name: user.name, surname: user.surname}}, $inc: {likeCount: 1}}, {new: true})
+            .populate('likes', '_id', 'name', 'surname')
+            .exec()
 
             res.send(findPost)
         } catch (error) {
@@ -187,7 +181,7 @@ const PostController = {
 
     async Unlike(req, res) {
         try {
-            const token = req.header('Authorization').replace('Bearer ', ''); //Busco al usuario logueado con token
+            const token = req.header('Authorization').replace('Bearer ', ''); 
             let user = await UserModel.findOne({
                 token: token
             });
@@ -212,7 +206,7 @@ const PostController = {
 
     async Comment(req, res) {
         try {
-          const token = req.header('Authorization').replace('Bearer ', ''); //Busco al usuario logueado con token
+          
             let user = await UserModel.findOne({
                 token: token
             });

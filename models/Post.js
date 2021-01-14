@@ -15,7 +15,12 @@ const PostSchema = new mongoose.Schema({
       categorie: {
         type: String
       },
-      likes: [{type: ObjectId, ref: 'User'}],
+      likes: [{
+        UserId: { type: ObjectId, ref: 'User'},
+        name: String,
+        surname: String
+        
+      }],
       likeCount: {
           type: Number
       },

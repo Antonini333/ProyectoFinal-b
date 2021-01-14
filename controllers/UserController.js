@@ -103,44 +103,40 @@ const UserController = {
         }
     },
 
-    async Logout(req, res) {
-        try {
-            const token = req.header('Authorization').replace('Bearer ', '');
+async Logout (req,res) {
 
-            await UserModel.findOneAndUpdate({
-                token: token
-            }, {
-                token: null
-            });
+    try {
+        const token = req.header('Authorization').replace('Bearer ', '');
+        let user = await UserModel.findOneAndUpdate({
+            token: token
+        }, {token: "null"});
 
-            res.send({
-                message: 'Session finished'
-            });
 
+        res.send(user);
         } catch (error) {
             console.log(error)
-            res.status(500).send({
-                message: 'Something went wrong logging out'
-            });
+            res.status(500).send({ message: 'Something went wrong logging out' });
         }
     },
 
     async Follow (req, res) {
         try{
-            const token = req.header('Authorization').replace('Bearer ', '');   //Busco al usuario logueado con token
+            const token = req.header('Authorization').replace('Bearer ', '');   
             let user = await UserModel.findOne({
                 token: token
             });
-          let result = await UserModel.findByIdAndUpdate(req.params._id, {$push: {followers: {UserId: user._id, name: user.name, surname: user.surname}}, $inc:{ followCount: 1}}, {new: true})  // Populo con el _id de user el array de "followers" del usuario seguido.
+            let user2 = await UserModel.findOne({
+                _id: req.params._id
+            })
+          let result = await UserModel.findByIdAndUpdate(req.params._id, {$push: {followers: {UserId: user._id, name: user.name, surname: user.surname}}, $inc:{ followCount: 1}}, {new: true})  
                                   .populate('followers', '_id', 'name', 'surname')
                                   .exec()
-        let user2 = await UserModel.findById(req.params._id)
-        let resultOK = await UserModel.findByIdAndUpdate(user._id, {$push: {following: {UserId: user2._id, name: user2.name, surname: user2.surname}}}, {new: true})  // Populo con el id del usuario seguido el array de "following" de user.
-                                  .populate('following', '_id', 'name', 'surname') 
+
+                                  await UserModel.findByIdAndUpdate(user._id, {$push: {following: {UserId: user2._id, name: user2.name, surname: user2.surname}}}, {new: true})  
+                                  .populate('following', '_id', 'name', 'surname')
                                   .exec()
-            res.json(result)
-            res.json(resultOK)
-            res.send(result, resultOK)
+            
+            res.send(user)
           }catch(error) {
             res.status(500).send({
               message: "Something went wrong following this user"
@@ -150,23 +146,25 @@ const UserController = {
 
       async Unfollow (req, res) {
         try{
-            const token = req.header('Authorization').replace('Bearer ', '');   //Busco al usuario logueado con token
+            const token = req.header('Authorization').replace('Bearer ', '');   
             let user = await UserModel.findOne({
                 token: token
             });
+            let user2 = await UserModel.findOne({
+                _id: req.params._id
+            })
           let result = await UserModel.findByIdAndUpdate(req.params._id, {$pull: {followers: {UserId: user._id, name: user.name, surname: user.surname}}, $inc:{ followCount: -1}}, {new: true})  // Populo con el _id de user el array de "followers" del usuario seguido.
                                   .populate('followers', '_id', 'name', 'surname')
                                   .exec()
-        let user2 = await UserModel.findById(req.params._id)
-        let resultOK = await UserModel.findByIdAndUpdate(user._id, {$pull: {following: {UserId: user2._id, name: user2.name, surname: user2.surname}}}, {new: true})  // Populo con el id del usuario seguido el array de "following" de user.
-                                  .populate('following', '_id', 'name', 'surname') 
+
+                                  await UserModel.findByIdAndUpdate(user._id, {$pu: {following: {UserId: user2._id, name: user2.name, surname: user2.surname}}}, {new: true})  // Populo con el _id de user el array de "followers" del usuario seguido.
+                                  .populate('following', '_id', 'name', 'surname')
                                   .exec()
             res.json(result)
-            res.json(resultOK)
-            res.send(result, resultOK)
+            res.send(result)
           }catch(error) {
             res.status(500).send({
-              message: "Something went wrong unfollowing this user"
+              message: "Something went wrong following this user"
             })
           }  
       },

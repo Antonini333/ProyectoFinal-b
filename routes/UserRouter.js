@@ -14,11 +14,11 @@ router.delete('/user/delete', auth, UserController.Delete);
 
 /* ACTIONS */
 router.post('/user/login', UserController.Login);
-router.post('/user/logout', auth, UserController.Logout);
+router.put('/user/logout', UserController.Logout);
 
 router.put('/user/follow/:_id', auth, UserController.Follow);
 router.put('/user/unfollow/:_id', auth, UserController.Unfollow);
-router.get('/users',  UserController.ReadAll);
+router.get('/users',  auth, UserController.ReadAll);
 
 
 
